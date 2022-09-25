@@ -308,7 +308,9 @@ void SFXSystem::_update()
    }
 
    // If we have a device then update it.
-   if ( mDevice )
+   // Nasty hack, don't call update if all channels are muted
+   bool muted = (getChannelVolume(1) <= 0.0) && (getChannelVolume(2) <= 0.0);
+   if ( mDevice && !muted )
       mDevice->update( mListener );
 
    // Update some stats.
